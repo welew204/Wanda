@@ -1,0 +1,18 @@
+<div>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Crime Type</th>
+            <th>Crime Description</th>
+            <th>Location (lat, lon)</th>
+        </tr>
+        {% for crime in all_crimes %}
+        <tr>
+            <td>{{crime.c_date}}</td>
+            <td>{{crime.c_type}}</td>
+            <td>{{crime.c_description}}</td>
+            <td>({{crime.c_lat}}, {{crime.c_long}})</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -8,6 +8,8 @@ django = "*"
 django-bootstrap-v5 = "*"
 django-debug-toolbar = "*"
 requests = "*"
+sodapy = "*"
+django-tables2 = "*"
 
 [dev-packages]
 

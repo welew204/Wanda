@@ -23,7 +23,7 @@ urlpatterns = [
     path("", views.login_page),
     path("u_login/", views.u_login, name="u_login"),
     path("users/<username>/add-evidence/confirm-location/<lat_lon>",
-         views.add_evidence),
+         views.confirm_location),
     path("see_data/", views.home_page, name="see_data"),
     path("see_data/crimes.geojson", views.crimes_to_geoJSON),
     path("logout/", views.logout, name="logout"),

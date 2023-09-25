@@ -153,13 +153,24 @@ def login_page(request):
     return render(request, "home_page.html", context)
 
 
+def confirm_location(request, username, lat_lon=(37.804363, -122.255)):
+    # print(lat_lon)
+    lat_lon = lat_lon.split(",")
+    lat_lon = (float(lat_lon[0]), float(lat_lon[1]))
+    # print(lat_lon)
+    #print(type(lat_lon), type(lat_lon[0]))
+    map_center = lat_lon
+    epsilon = .002  # or about 220m radius around the point selected
+    nearby_crimes = Crime.objects.filter(
+        c_lon__range=(map_center[1]-epsilon, map_center[1]+epsilon), c_lat__range=(map_center[0]-epsilon, map_center[0]+epsilon)).values()
+    crimes_to_pass = [crime for crime in nearby_crimes]
+    # pprint(nearby_crimes)
+    # pprint(crimes_to_pass)
+    return JsonResponse({"crimes": crimes_to_pass})
+
+
 def add_evidence(request, username, lat_lon=(37.804363, -122.255)):
-    if lat_lon != (37.804363, -122.255):
-        lat_lon = lat_lon[1:-1]
-        lat_lon = lat_lon.split(",")
-        lat_lon = (float(lat_lon[0]), float(lat_lon[1]))
-        print(lat_lon)
-        print(type(lat_lon), type(lat_lon[0]))
+
     user = User.objects.get(username=username)
     map_center = lat_lon
     nearby_crimes = Crime.objects.filter(

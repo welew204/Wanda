@@ -2,6 +2,8 @@
 
 <div id='map'></div>
 <script>
+    const server_url = window.location.href;
+    // console.log(server_url)
     mapboxgl.accessToken = "{{ mapbox_access_token }}";
     const map = new mapboxgl.Map({
         container: 'map', // container ID
@@ -9,9 +11,70 @@
         center: [-122.255, 37.804363], // OAKLAND starting position [lng, lat]
         zoom: 11, // starting zoom
     });
-    marker = new mapboxgl.Marker({}).setLngLat(map.getCenter()).addTo(map);
-    map.on('move', function (e) {
-        console.log(`Current Map Center: ${map.getCenter()}`);
-        marker.setLngLat(map.getCenter());
+    map.on('load', () => {
+        map.addSource('crimes', {
+            type: 'geojson',
+            data: `${window.location.origin}/see_data/crimes.geojson`
+        });
+        console.log("loaded the crimes geojson from ...", `${window.location.origin}/see_data/crimes.geojson`)
+
+        map.addLayer({
+            id: 'crimes-heat',
+            type: 'heatmap',
+            source: 'crimes',
+            maxzoom: 20,
+            paint: {
+                'heatmap-weight': 1,
+                // assign color values be applied to points depending on their density
+                'heatmap-color': [
+                    'interpolate',
+                    ['linear'],
+                    ['heatmap-density'],
+                    0,
+                    'rgba(236,222,239,0)',
+                    0.2,
+                    'rgb(208,209,230)',
+                    0.4,
+                    'rgb(166,189,219)',
+                    0.6,
+                    'rgb(103,169,207)',
+                    0.8,
+                    'rgb(28,144,153)'
+                ],
+                // increase radius as zoom increases
+                'heatmap-radius': {
+                    stops: [
+                        [11, 2],
+                        [20, 5],
+                    ]
+                },
+                // decrease opacity to transition into the circle layer
+                'heatmap-opacity': 1
+            }
+        }, 'waterway-label'
+        );
     });
+    marker = new mapboxgl.Marker({}).setLngLat(map.getCenter()).addTo(map);
+
+    async function getCrimeTable(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json()
+            return data
+        } catch (error) {
+            console.error("Error:", error);
+            throw error;
+        }
+    }
+    map.on('move', function (e) {
+        marker.setLngLat(map.getCenter());
+        url_string = `${server_url}confirm-location/${map.getCenter().lat},${map.getCenter().lng}`
+        getCrimeTable(url_string).then(data => {
+            //console.log(data)
+        })
+    });
+
 </script>

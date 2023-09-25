@@ -21,6 +21,13 @@ from dash_app import views
 
 urlpatterns = [
     path("", views.login_page),
+    path("u_login/", views.u_login, name="u_login"),
+    path("users/<username>/add-evidence/confirm-location/<lat_lon>",
+         views.add_evidence),
     path("see_data/", views.home_page, name="see_data"),
+    path("see_data/crimes.geojson", views.crimes_to_geoJSON),
+    path("logout/", views.logout, name="logout"),
+    path("users/<username>/add-evidence/",
+         views.add_evidence, name="add-evidence"),
     path("admin/", admin.site.urls),
 ]

@@ -5,18 +5,28 @@
 <div class="row">
     <div class="col" id="hero">
         <h1>Check the heartbeat of the Town.</h1>
-        <h1>Stop being ignorant and racist.</h1>
-        <h1>Crime is Real. So is Community.</h1>
+        <h1>Crime is Real. </h1>
+        <h1>So is Community.</h1>
     </div>
     <div class="col">
         {% if user.is_authenticated %}
         <h1>Welcome {{ user.username }}</h1>
-        <hr />
-        {% endif %}
-        <h1 style="text-align: center; margin: 10vh">
-            <img src="{% static 'HofOak.png' %}" style="width: 15vh" /> HeartBeat
-        </h1>
 
+        {% else %}
+        <h1>Log In</h1>
+        <form action="{% url 'u_login' %}" method="post">
+            {% csrf_token %}
+            {{ login_form.as_p }}
+            <button class="btn btn-lg btn-primary" type="submit">Log In</button>
+        </form>
+        {% endif %}
+
+        <!-- <h1 style="text-align: center; margin: 10vh">
+            <img src="{% static 'HofOak.png' %}" style="width: 15vh" /> HeartBeat
+        </h1> -->
+
+        <hr />
+        <h1>Register</h1>
         <form action="." method="POST">
             {% csrf_token %}
             {{ form.as_p }}

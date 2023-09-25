@@ -134,11 +134,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # conda install (base) --> these are both paths to aliases...?
 #GEOS_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgeos.dylib"
-#GDAL_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgdal.dylib"
+GDAL_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgdal.dylib"
 
 DJANGO_TABLES2_TABLE_ATTRS = {
     'class': 'table table-hover',
     'thead': {
         'class': 'table-light',
     },
+}
+
+SERIALIZATION_MODULES = {
+    "geojson": "django.contrib.gis.serializers.geojson",
 }

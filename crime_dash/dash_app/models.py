@@ -20,3 +20,19 @@ class Crime(models.Model):
         if raw == True:
             return  # the row, comma-delimited
         return  # a nice readable snippet
+
+
+class Evidence(models.Model):
+    # add all the incoming columns here
+    c_correlated = models.ForeignKey(
+        Crime, blank=True, null=True, on_delete=models.SET_NULL)
+    e_description = models.CharField(
+        "Scene/Evidence Description", max_length=200)
+    e_date = models.DateField("Date")
+    e_lat = models.DecimalField("Latitude", max_digits=15, decimal_places=9)
+    e_lon = models.DecimalField("Longitude", max_digits=15, decimal_places=9)
+
+    def __str__(self, raw=False):
+        if raw == True:
+            return  # the row, comma-delimited
+        return  # a nice readable snippet

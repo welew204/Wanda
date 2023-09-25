@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class="evidence">
+    <div class="evidence-title">
+
+        <h1>Add Visual Evidence</h1>
+    </div>
+    <pre>Drag to your location</pre>
+    <pre>Match any of these crimes?</pre>
+    {% include "snippets/locatorMap.html" %}
+    <div class="evidence-table">
+        {% render_table table %}
+    </div>
+    <div>
+        <script>
+            function pipeInLatLon() {
+                let url = "{ }"
+            }
+        </script>
+        <span><!-- this should get some Lat,Lon values from the javascript to display --></span>
+        <a href="confirm-location/(-124.255,39.804363)"
+            class="btn btn-lg btn-primary">Confirm
+            Location
+        </a>
+    </div>
+    <form class="evidence-form" action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-lg btn-primary" type="submit">Submit</button>
+    </form>
+
+    {% endblock content %}

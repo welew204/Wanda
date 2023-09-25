@@ -10,6 +10,7 @@ django-debug-toolbar = "*"
 requests = "*"
 sodapy = "*"
 django-tables2 = "*"
+pygal = "*"
 
 [dev-packages]
 

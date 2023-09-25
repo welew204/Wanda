@@ -2,9 +2,29 @@
 {% load static i18n %}
 {% load render_table from django_tables2 %}
 
-
 {% block content %}
-<div class="container">
-    {% render_table table %}
+<div class="bucket">
+    <!-- THIS header is not playing nice in the grid!!!! -->
+    <!-- <h3 class="dash-title">Crime Dashboard as of {{most_recent}}</h3> -->
+    <pre>Breakdown of Crimes by Type, in %</pre>
+    <pre>Crime Heatmap</pre>
+    <div class="pie_chart">
+        <embed type="image/svg+xml" src="{{ pie|safe }}" />
+    </div>
+
+    {% include "snippets/heatmap.html" %}
+
+    <div class="tl_title">
+        <pre>Timeline of Crimes</pre>
+    </div>
+    <div class="tl_chart">
+        <embed type="image/svg+xml" src="{{ timeline|safe }}" />
+    </div>
+    <div class="allc_title">
+        <pre>All Crimes, Starting with Today</pre>
+    </div>
+    <div class="all_c_table">
+        {% render_table table %}
+    </div>
 </div>
 {% endblock content %}

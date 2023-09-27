@@ -179,10 +179,13 @@ def add_evidence(request, username, lat_lon=(37.804363, -122.255)):
 
     table = CrimeEvidenceTable(nearby_crimes.order_by('-c_date'))
     form = AddEvidenceForm()
+    evidence = Evidence.objects.all()
     # map centered on: (37.804363, -122.255)
     context = {"mapbox_access_token": mapbox_access_token,
                "table": table,
-               "form": form}
+               "form": form,
+               # "evidence": evidence
+               }
     return render(request, "add_evidence.html", context)
 
 

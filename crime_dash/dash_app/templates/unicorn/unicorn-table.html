@@ -1,0 +1,23 @@
+<div unicorn:view>
+    <h2>Crime List</h2>
+    <hr />
+
+    <!-- Allow user to enter a new movie, and add to list.
+        The input is bound to a property called "name" on the component
+        Button connects to an 'add_movie' method on the component -->
+    <input type="text" unicorn:model="name" />
+    <button unicorn:click="add_evidence">Add Crime</button>
+
+    <!-- Show the existing movies, from the component's "movies" property -->
+    <ul unicorn:model="evidence">
+        <p>{{evidence}}</p>
+        {% if name == 'Rik' %}
+
+        <p> anything...?</p>
+        {% endif %}
+        {% for evi in evidence %}
+
+        <li>{{ evi.e_description }}</li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% load static i18n %}
 {% load render_table from django_tables2 %}
+{% load unicorn %}
+
+{% block extra_head %}
+{% unicorn_scripts %}
+{% endblock %}
 
 {% block content %}
 <div class="evidence">
+
     <div class="evidence-title">
 
         <h1>Add Visual Evidence</h1>
@@ -12,14 +18,13 @@
     <pre>Match any of these crimes?</pre>
     {% include "snippets/locatorMap.html" %}
     <div class="evidence-table">
-        {% render_table table %}
+        {% csrf_token %}
+
+        {% unicorn 'unicorn-table' %}
+
+        <!-- {% render_table table %} -->
     </div>
     <div>
-        <script>
-            function pipeInLatLon() {
-                let url = "{ }"
-            }
-        </script>
         <span><!-- this should get some Lat,Lon values from the javascript to display --></span>
 
     </div>

@@ -73,7 +73,7 @@
         marker.setLngLat(map.getCenter());
         url_string = `${server_url}confirm-location/${map.getCenter().lat},${map.getCenter().lng}`
         getCrimeTable(url_string).then(data => {
-            //console.log(data)
+            console.log(data)
         })
     });
 

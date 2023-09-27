@@ -11,6 +11,7 @@ requests = "*"
 sodapy = "*"
 django-tables2 = "*"
 pygal = "*"
+django-unicorn = "*"
 
 [dev-packages]
 

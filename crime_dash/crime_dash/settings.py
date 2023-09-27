@@ -37,7 +37,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "dash_app",
+
     "django_tables2",
+    "django_unicorn",
 
     "django.contrib.admin",
     "django.contrib.auth",

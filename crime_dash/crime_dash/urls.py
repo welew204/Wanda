@@ -29,5 +29,7 @@ urlpatterns = [
     path("logout/", views.logout, name="logout"),
     path("users/<username>/add-evidence/",
          views.add_evidence, name="add-evidence"),
+
+    path("unicorn/", include("django_unicorn.urls")),
     path("admin/", admin.site.urls),
 ]

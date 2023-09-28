@@ -16,11 +16,6 @@ class Crime(models.Model):
     c_city = models.CharField(max_length=30)
     c_state = models.CharField(max_length=3)
 
-    def __str__(self, raw=False):
-        if raw == True:
-            return  # the row, comma-delimited
-        return  # a nice readable snippet
-
 
 class Evidence(models.Model):
     # add all the incoming columns here
@@ -31,8 +26,3 @@ class Evidence(models.Model):
     e_date = models.DateField("Date")
     e_lat = models.DecimalField("Latitude", max_digits=15, decimal_places=9)
     e_lon = models.DecimalField("Longitude", max_digits=15, decimal_places=9)
-
-    def __str__(self, raw=False):
-        if raw == True:
-            return  # the row, comma-delimited
-        return  # a nice readable snippet

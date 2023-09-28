@@ -56,25 +56,13 @@
     });
     marker = new mapboxgl.Marker({}).setLngLat(map.getCenter()).addTo(map);
 
-    async function getCrimeTable(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json()
-            return data
-        } catch (error) {
-            console.error("Error:", error);
-            throw error;
-        }
-    }
     map.on('move', function (e) {
         marker.setLngLat(map.getCenter());
-        url_string = `${server_url}confirm-location/${map.getCenter().lat},${map.getCenter().lng}`
-        getCrimeTable(url_string).then(data => {
-            console.log(data)
-        })
+
+    });
+    map.on('dragend', () => {
+        Unicorn.call('unicorn-table', 'update_center', `${map.getCenter().lat},${map.getCenter().lng}`);
+        console.log('A dragend event occurred.');
     });
 
 </script>

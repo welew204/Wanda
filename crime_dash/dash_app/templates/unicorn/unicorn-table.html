@@ -1,23 +1,26 @@
-<div unicorn:view>
+<div>
     <h2>Crime List</h2>
+    <p>{{crimes|length}} incidents located near (Lat/Lon): {{lat_lon}}</p>
     <hr />
 
-    <!-- Allow user to enter a new movie, and add to list.
-        The input is bound to a property called "name" on the component
-        Button connects to an 'add_movie' method on the component -->
-    <input type="text" unicorn:model="name" />
-    <button unicorn:click="add_evidence">Add Crime</button>
+    <!-- Show the nearby crimes, populate into table -->
 
-    <!-- Show the existing movies, from the component's "movies" property -->
-    <ul unicorn:model="evidence">
-        <p>{{evidence}}</p>
-        {% if name == 'Rik' %}
+    <table>
 
-        <p> anything...?</p>
-        {% endif %}
-        {% for evi in evidence %}
+        </thead>
+        <tbody>
+            {% for crime in crimes %}
 
-        <li>{{ evi.e_description }}</li>
-        {% endfor %}
-    </ul>
+            <tr>
+                <!-- unicorn:click="make_evidence_connect({{crime.id}})" -->
+                <td>{{crime.c_date}}</td>
+                <td>{{crime.c_description}}</td>
+                <td><button unicorn:click="make_evidence_connect({{crime.id}})">Add
+                        Evidence</button></td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
 </div>

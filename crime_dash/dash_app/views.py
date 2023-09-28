@@ -153,6 +153,7 @@ def login_page(request):
     return render(request, "home_page.html", context)
 
 
+# this is no longer needed or called
 def confirm_location(request, username, lat_lon=(37.804363, -122.255)):
     # print(lat_lon)
     lat_lon = lat_lon.split(",")
@@ -184,7 +185,6 @@ def add_evidence(request, username, lat_lon=(37.804363, -122.255)):
     context = {"mapbox_access_token": mapbox_access_token,
                "table": table,
                "form": form,
-               # "evidence": evidence
                }
     return render(request, "add_evidence.html", context)
 

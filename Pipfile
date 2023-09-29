@@ -12,6 +12,7 @@ sodapy = "*"
 django-tables2 = "*"
 pygal = "*"
 django-unicorn = "*"
+gunicorn = "*"
 
 [dev-packages]
 

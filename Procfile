@@ -1,1 +1,1 @@
-web: gunicorn crime_dash.wsgi
+web: gunicorn crime_dash.crime_dash.wsgi

@@ -27,9 +27,14 @@ class NewUserForm(forms.ModelForm):
 
 
 class LoginUserForm(forms.ModelForm):
+    # password = forms.CharField(widget=forms.PasswordInput()) # this also works
+
     class Meta:
         model = User
         fields = ['username', 'password']
+        widgets = {
+            'password': forms.PasswordInput()
+        }
 
 
 class CrimeTable(tables.Table):
@@ -121,8 +126,7 @@ def u_login(request):
 
 
 def login_page(request):
-    print("whaddup funker!")
-    # print(request)
+
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request
@@ -144,7 +148,7 @@ def login_page(request):
 
     else:
         # if a GET we'll create a blank form
-        form = NewUserForm()
+        form = NewUserForm(auto_id="register_%s")
         login_form = LoginUserForm()
     context = {
         'form': form,
@@ -153,37 +157,16 @@ def login_page(request):
     return render(request, "home_page.html", context)
 
 
-# this is no longer needed or called
-def confirm_location(request, username, lat_lon=(37.804363, -122.255)):
-    # print(lat_lon)
-    lat_lon = lat_lon.split(",")
-    lat_lon = (float(lat_lon[0]), float(lat_lon[1]))
-    # print(lat_lon)
-    #print(type(lat_lon), type(lat_lon[0]))
-    map_center = lat_lon
-    epsilon = .002  # or about 220m radius around the point selected
-    nearby_crimes = Crime.objects.filter(
-        c_lon__range=(map_center[1]-epsilon, map_center[1]+epsilon), c_lat__range=(map_center[0]-epsilon, map_center[0]+epsilon)).values()
-    crimes_to_pass = [crime for crime in nearby_crimes]
-    # pprint(nearby_crimes)
-    # pprint(crimes_to_pass)
-    return JsonResponse({"crimes": crimes_to_pass})
-
-
-def add_evidence(request, username, lat_lon=(37.804363, -122.255)):
-
+def add_evidence(request, username):
     user = User.objects.get(username=username)
-    map_center = lat_lon
-    nearby_crimes = Crime.objects.filter(
-        c_lon__range=(map_center[1]-.004, map_center[1]+.004), c_lat__range=(map_center[0]-.004, map_center[0]+.004))
-    print(len(nearby_crimes))
+    # map_center = lat_lon
 
-    table = CrimeEvidenceTable(nearby_crimes.order_by('-c_date'))
+    #table = CrimeEvidenceTable(nearby_crimes.order_by('-c_date'))
     form = AddEvidenceForm()
     evidence = Evidence.objects.all()
     # map centered on: (37.804363, -122.255)
     context = {"mapbox_access_token": mapbox_access_token,
-               "table": table,
+               # "table": table,
                "form": form,
                }
     return render(request, "add_evidence.html", context)

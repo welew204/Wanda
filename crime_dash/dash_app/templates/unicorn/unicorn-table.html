@@ -1,6 +1,7 @@
 <div>
     <h2>Crime List</h2>
-    <p>{{crimes|length}} incidents located near (Lat/Lon): {{lat_lon}}</p>
+    <p class="infotext">{{crimes|length}} incidents located near your selected location.
+    </p>
     <hr />
 
     <!-- Show the nearby crimes, populate into table -->
@@ -12,10 +13,11 @@
             {% for crime in crimes %}
 
             <tr>
-                <!-- unicorn:click="make_evidence_connect({{crime.id}})" -->
+
                 <td>{{crime.c_date}}</td>
                 <td>{{crime.c_description}}</td>
-                <td><button unicorn:click="make_evidence_connect({{crime.id}})">Add
+                <td><button class="btn btn-sm btn-primary"
+                        onclick="Unicorn.call('unicorn-form', 'populate_crime_info', '{{crime.id}}');">Add
                         Evidence</button></td>
             </tr>
 

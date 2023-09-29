@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static i18n %}
-{% load render_table from django_tables2 %}
+
 {% load unicorn %}
 
 {% block extra_head %}
@@ -14,24 +14,20 @@
 
         <h1>Add Visual Evidence</h1>
     </div>
-    <pre>Drag to your location</pre>
-    <pre>Match any of these crimes?</pre>
+    <p class="infotext">Drag to your location</p>
+    <p class="infotext">Match any of these crimes?</p>
     {% include "snippets/locatorMap.html" %}
     <div class="evidence-table">
         {% csrf_token %}
 
         {% unicorn 'unicorn-table' %}
 
-        <!-- {% render_table table %} -->
-    </div>
-    <div>
-        <span><!-- this should get some Lat,Lon values from the javascript to display --></span>
 
     </div>
-    <form class="evidence-form" action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-lg btn-primary" type="submit">Submit</button>
-    </form>
+    <div class="evidence-form">
+        {% unicorn 'unicorn-form' %}
+
+
+    </div>
 
     {% endblock content %}

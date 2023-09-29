@@ -16,6 +16,19 @@
     grid-column: span 2;
 }
 
+h1, h2, h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+.infotext {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-style: italic;
+    font-size: medium;
+}
+
 .evidence {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -42,6 +55,9 @@
 
 .evidence-form {
     grid-column: span 2;
+    align-self: start;
+    min-width: 400px;
+    max-width: 500px;
 }
 
 .pie_chart {

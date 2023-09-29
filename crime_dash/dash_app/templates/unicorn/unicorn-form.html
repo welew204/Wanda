@@ -1,0 +1,25 @@
+<div>
+    <div>
+
+        {% if crime %}
+        <h3>Crime Details</h3>
+        <p><strong>Date: </strong>{{crime.c_date}}</p>
+        <p><strong>Type: </strong>{{crime.c_type}}</p>
+        <p><strong>Description: </strong>{{crime.c_description}}</p>
+        {% else %}
+        <p class="infotext">Select a crime to view details and describe evidence</p>
+        {% endif %}
+    </div>
+    <div>
+        {% if crime %}
+        <p><strong>Describe the scene: </strong></p><textarea unicorn:model="description"
+            type="text"></textarea> <br />
+        <button class="btn btn-lg btn-primary"
+            unicorn:click="add_evidence">Submit</button>
+        <button class="btn btn-lg btn-primary" unicorn:click="clear_crime">Clear
+            Form</button>
+        {% endif %}
+    </div>
+
+
+</div>

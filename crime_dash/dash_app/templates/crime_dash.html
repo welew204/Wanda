@@ -6,8 +6,8 @@
 <div class="bucket">
     <!-- THIS header is not playing nice in the grid!!!! -->
     <h3 class="dash-title">Crime Dashboard as of {{most_recent}}</h3>
-    <pre>Breakdown of Crimes by Type, in %</pre>
-    <pre>Crime Heatmap</pre>
+    <p class="infotext">Breakdown of Crimes by Type, in %</p>
+    <p class="infotext">Crime Heatmap</p>
     <div class="pie_chart">
         <embed type="image/svg+xml" src="{{ pie|safe }}" />
     </div>
@@ -15,13 +15,13 @@
     {% include "snippets/heatmap.html" %}
 
     <div class="tl_title">
-        <pre>Timeline of Crimes</pre>
+        <p class="infotext">Timeline of Crimes</p>
     </div>
     <div class="tl_chart">
         <embed type="image/svg+xml" src="{{ timeline|safe }}" />
     </div>
     <div class="allc_title">
-        <pre>All Crimes, Starting with Today</pre>
+        <p class="infotext">All Crimes, Starting with {{most_recent}}</p>
     </div>
     <div class="all_c_table">
         {% render_table table %}

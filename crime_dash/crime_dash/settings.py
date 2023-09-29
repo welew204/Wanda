@@ -25,7 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%vtf*7%sv7#pmyl_9+@0(iei=hg3m!3cxs-yy&=!@0l+dbvbig"
+#
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,8 +37,9 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "crime_dash.dash_app",
-    # trying to point to the correct filespace, given that my app is inside a project called the same?
+    "dash_app",
+    # tried to point to the correct filespace, given that my app is inside a project called the same?
+    # but this did not work
 
     "django_tables2",
     "django_unicorn",
@@ -52,6 +54,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -149,3 +154,5 @@ DJANGO_TABLES2_TABLE_ATTRS = {
 SERIALIZATION_MODULES = {
     "geojson": "django.contrib.gis.serializers.geojson",
 }
+
+STATIC_ROOT = f"{BASE_DIR}/staticfiles"

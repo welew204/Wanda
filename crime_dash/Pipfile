@@ -13,6 +13,7 @@ django-tables2 = "*"
 pygal = "*"
 django-unicorn = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 

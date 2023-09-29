@@ -9,6 +9,7 @@ from django.http import JsonResponse
 import django_tables2 as tables
 import pygal
 
+import os
 import datetime
 import json
 from pprint import pprint
@@ -17,7 +18,8 @@ from .models import Crime
 from .models import Evidence
 
 # TODO change access method to .env variable!
-mapbox_access_token = 'pk.eyJ1Ijoid2VsZXcyMDQiLCJhIjoiY2xtcGwwenE0MTkxcjJucGIyY3VuZXhteSJ9.ubOdK7rgWM740e8X3sUL5g'
+
+mapbox_access_token = os.environ.get('MAP_KEY')
 
 
 class NewUserForm(forms.ModelForm):

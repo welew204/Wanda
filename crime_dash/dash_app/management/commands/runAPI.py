@@ -12,10 +12,7 @@ class Command(BaseCommand):
         # make request w/ requests library
         # SODA call
         client = Socrata("data.oaklandca.gov", None)
-        # OaklandDataSet ID: ym6k-rx7a
-        # App token: qYX2jLFsWcJBkQkrRaEeiGBRa
-        # ---> not sure about how to use this token as a kwarg in my .get call...
-        # https://dev.socrata.com/docs/app-tokens.html
+
         results = client.get("ym6k-rx7a", limit=2000)
         if results:
             Crime.objects.all().delete()

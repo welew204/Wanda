@@ -36,7 +36,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "dash_app",
+    "crime_dash.dash_app",
+    # trying to point to the correct filespace, given that my app is inside a project called the same?
 
     "django_tables2",
     "django_unicorn",

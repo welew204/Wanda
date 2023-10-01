@@ -10,18 +10,19 @@
         style: 'mapbox://styles/welew204/clmpk6ttn04qe01qig97x1hum', // style URL
         center: [-122.255, 37.804363], // OAKLAND starting position [lng, lat]
         zoom: 11, // starting zoom
+        maxzoom: 20,
     });
     map.on('load', () => {
-        map.addSource('crimes', {
+        map.addSource('crimes-evi', {
             type: 'geojson',
             data: `${window.location.origin}/see_data/crimes.geojson`
         });
-        console.log("loaded the crimes geojson from ...", `${window.location.origin}/see_data/crimes.geojson`)
+        console.log(`loaded the crimes geojson from ...${window.location.origin}/see_data/crimes.geojson`)
 
         map.addLayer({
-            id: 'crimes-heat',
+            id: 'crimes-heat-evi',
             type: 'heatmap',
-            source: 'crimes',
+            source: 'crimes-evi',
             maxzoom: 20,
             paint: {
                 'heatmap-weight': 1,
@@ -44,8 +45,8 @@
                 // increase radius as zoom increases
                 'heatmap-radius': {
                     stops: [
-                        [11, 2],
-                        [20, 5],
+                        [11, 5],
+                        [20, 20],
                     ]
                 },
                 // decrease opacity to transition into the circle layer
@@ -54,9 +55,9 @@
         }, 'waterway-label'
         );
         map.addLayer({
-            id: 'crimes-point',
+            id: 'crimes-point-evi',
             type: 'circle',
-            source: 'crimes',
+            source: 'crimes-evi',
             minzoom: 14,
             paint: {
                 // increase the radius of the circle as the zoom level and dbh value increases
@@ -96,7 +97,7 @@
         Unicorn.call('unicorn-form', 'set_lat_lon', `${map.getCenter().lat},${map.getCenter().lng}`);
         console.log('A dragend event occurred.');
     });
-    map.on('mouseover', 'crimes-point', function (e) {
+    map.on('mouseover', 'crimes-point-evi', function (e) {
         map.getCanvas().style.cursor = 'pointer'
         html_string = `<b>Details:</b> <p>${e.features[0].properties.c_date}</p><p>${e.features[0].properties.c_type ? e.features[0].properties.c_type : 'Type undefined'}</p>`
         new mapboxgl.Popup()
@@ -105,10 +106,10 @@
             .addTo(map);
         console.log(e)
     })
-    map.on('click', 'crimes-point', function (e) {
+    map.on('click', 'crimes-point-evi', function (e) {
         console.log("clicked!!!")
     })
-    map.on('mouseleave', 'crimes-point', function (e) {
+    map.on('mouseleave', 'crimes-point-evi', function (e) {
         map.getCanvas().style.cursor = ''
         console.log("mouse LEAVE happneing")
     })

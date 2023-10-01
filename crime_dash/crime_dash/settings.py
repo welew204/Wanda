@@ -149,8 +149,6 @@ DJANGO_TABLES2_TABLE_ATTRS = {
     },
 }
 
-SERIALIZATION_MODULES = {
-    "geojson": "django.contrib.gis.serializers.geojson",
-}
+# deleted geojson serializer!! don't need it and it was screwing w/ imports in heroku
 
 STATIC_ROOT = f"{BASE_DIR}/staticfiles"

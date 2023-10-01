@@ -10,12 +10,20 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # make request w/ requests library
-        # SODA call
-        client = Socrata("data.oaklandca.gov", None)
+        # >> heroku scheduler recommends a 'return' at the end of every logical conclusion to make sure the dyno knows to end!
+        try:
+            client = Socrata("data.oaklandca.gov", None)
+        except:
+            self.stdout.write("could not connect with 'data.oaklandca.gov'")
+            # if the connection fails, should stop the job
+            return
 
         results = client.get("ym6k-rx7a", limit=2000)
+        # "ym6k-rx7a" is the 'dataset identifier
         if results:
             Crime.objects.all().delete()
+            self.stdout.write(
+                f"Deleted previous crimes, current model count: (this num should be 0) {Crime.objects.all().count()}")
         # print(results[0])
         missing_type = 0
         corrected = 0
@@ -57,5 +65,10 @@ class Command(BaseCommand):
                 c_state=crime['state']
             )
         self.stdout.write(
-            f"{missing_type} rows w/ missing 'type'// \n-->{corrected} corrected")
+            f"Model now includes {Crime.objects.all().count()} crimes")
+        self.stdout.write(
+            f" --> Most recent date = {Crime.objects.all().order_by('-c_date').first().c_date}")
+        self.stdout.write(
+            f"{missing_type} rows w/ missing 'type'// \n--> corrected {corrected} / {missing_type}")
         self.stdout.write("DB updated w/ fresh data!")
+        return

@@ -9,28 +9,38 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
-#from pathlib import Path
+import dj_database_url
 import os
+import environ
+
+# from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-## BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# method....
+env = environ.Env(
+    # this means that when reading from .env file (locally, it will be debug mode, but in prod it will default to False)
+    DEBUG=(bool, False)
+)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# for grabbing env vars from .env file
 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #
 SECRET_KEY = os.environ.get('SECRET_KEY')
+#DATABASE_URL = os.environ.get('DATABASE_URL')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ["*"]
 
@@ -89,13 +99,31 @@ WSGI_APPLICATION = "crime_dash.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        # "NAME": BASE_DIR / "db.sqlite3",
-        # alt method...
-        "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+    # hard-coding postgres db connections (seems wrong?)
+    # 'default': {
+    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #    'NAME': DATABASE_URL,
+    #    'USER':
+    #    'PASSWORD': [password from heroku postgres]
+    #    'HOST': [host from heroku postgres]
+    #    'PORT':  [Port from heroku postgres]
+    # }
 
-    }
+    # using dj_database_url (heroku recommended)
+    "default": dj_database_url.config(
+       conn_max_age=600,
+       conn_health_checks=True,
+       ssl_require=True,
+    ),
+
+    # using sqlite3 (for early dev)
+    # "default": {
+    # "ENGINE": "django.db.backends.sqlite3",
+    # "NAME": BASE_DIR / "db.sqlite3",
+    # alt method...
+    # "NAME": os.path.join(BASE_DIR, 'db.sqlite3'),
+
+
 }
 
 
@@ -136,11 +164,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # setting GEOS and GDAL filepaths:
 # homebrew install
-#GEOS_LIBRARY_PATH = "/opt/homebrew/Cellar/geos/3.12.0/lib/libgeos_c.1.18.0.dylib"
-#GDAL_LIBRARY_PATH = "/opt/homebrew/Cellar/gdal/3.7.1_4/lib/libgdal.33.3.7.1.dylib"
+# GEOS_LIBRARY_PATH = "/opt/homebrew/Cellar/geos/3.12.0/lib/libgeos_c.1.18.0.dylib"
+# GDAL_LIBRARY_PATH = "/opt/homebrew/Cellar/gdal/3.7.1_4/lib/libgdal.33.3.7.1.dylib"
 
 # conda install (base) --> these are both paths to aliases...?
-#GEOS_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgeos.dylib"
+# GEOS_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgeos.dylib"
 GDAL_LIBRARY_PATH = "/Users/williamhbelew/opt/anaconda3/lib/libgdal.dylib"
 
 DJANGO_TABLES2_TABLE_ATTRS = {

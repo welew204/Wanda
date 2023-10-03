@@ -18,6 +18,9 @@
             data: `${window.location.origin}/see_data/crimes.geojson`
         });
         console.log(`loaded the crimes geojson from ...${window.location.origin}/see_data/crimes.geojson`)
+        let nearby = get_crimes().then(res => map.addLayer('radius', createGeoJSONCircle(0.5)))
+        //console.log(nearby[-1][1])
+        // add radius here
 
         map.addLayer({
             id: 'crimes-heat-evi',
@@ -88,6 +91,93 @@
     });
     marker = new mapboxgl.Marker({}).setLngLat(map.getCenter()).addTo(map);
 
+    // jS implementation of Haversine formula for calcing distance...https://stackoverflow.com/a/21623206/19589299
+    async function get_crimes() {
+        const crimeResponse = await fetch(`${window.location.origin}/see_data/crimes.geojson`)
+        const crimes_geojson = await crimeResponse.json()
+        console.log("got crimes data!")
+        let close_crimes = sort_by_distance(crimes_geojson)
+        console.log(close_crimes)
+
+        return (close_crimes)
+    }
+    //get_crimes()
+
+    function sort_by_distance(crimes_geojson) {
+        map_ctr_lng = map.getCenter().lng
+        map_ctr_lat = map.getCenter().lat
+        radii = []
+        //console.log(crimes_geojson.features)
+        for (c of crimes_geojson.features) {
+            //console.log(c)
+            let lon = c.geometry.coordinates[0]
+            let lat = c.geometry.coordinates[1]
+
+            //console.log(lon, lat)
+            let dist = distance(map_ctr_lat, map_ctr_lng, lat, lon)
+            radii.push([c.properties.pk, dist])
+        }
+        radii.sort(function (a, b) { return a[1] - b[1] })
+        console.log("sorted crime data!")
+        return radii.slice(0, 5)
+    }
+
+
+
+    //for (let element of crimePoints) {
+    //console.log()
+    //}
+    function distance(lat1, lon1, lat2, lon2) {
+        const r = 6371; // km
+        const p = Math.PI / 180;
+
+        const a = 0.5 - Math.cos((lat2 - lat1) * p) / 2
+            + Math.cos(lat1 * p) * Math.cos(lat2 * p) *
+            (1 - Math.cos((lon2 - lon1) * p)) / 2;
+
+        return 2 * r * Math.asin(Math.sqrt(a));
+    }
+
+
+    // possibly just do with turf.js?
+    let createGeoJSONCircle = function (radiusInKm, points) {
+        if (!points) points = 64;
+
+        let coords = {
+            latitude: map.getCenter().lng,
+            longitude: map.getCenter().lng
+        };
+
+        let km = radiusInKm;
+
+        let ret = [];
+        let distanceX = km / (111.320 * Math.cos(coords.latitude * Math.PI / 180));
+        let distanceY = km / 110.574;
+
+        let theta, x, y;
+        for (let i = 0; i < points; i++) {
+            theta = (i / points) * (2 * Math.PI);
+            x = distanceX * Math.cos(theta);
+            y = distanceY * Math.sin(theta);
+
+            ret.push([coords.longitude + x, coords.latitude + y]);
+        }
+        ret.push(ret[0]);
+
+        return {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [ret]
+                    }
+                }]
+            }
+        };
+    };
     map.on('move', function (e) {
         marker.setLngLat(map.getCenter());
 
@@ -95,6 +185,8 @@
     map.on('dragend', () => {
         Unicorn.call('unicorn-table', 'update_center', `${map.getCenter().lat},${map.getCenter().lng}`);
         Unicorn.call('unicorn-form', 'set_lat_lon', `${map.getCenter().lat},${map.getCenter().lng}`);
+        //this requeries for data, sorts on distance, gets the 5 closest ones
+        get_crimes()
         console.log('A dragend event occurred.');
     });
     map.on('mouseover', 'crimes-point-evi', function (e) {

@@ -75,11 +75,13 @@ class CrimeEvidenceTable(tables.Table):
 
 def crimes_to_geoJSON(request):
     crimes = Crime.objects.all()
+    print(len(crimes))
+    #pprint(crimes)
     # iterate thru qs to make a FeatureCollection
     fc = {"type": "FeatureCollection", "features": []}
     for c in crimes:
 
-        formatted_feature = {"type": "Feature", "properties": {"c_type": c.c_type, "c_date": c.c_date.strftime("%m/%d/%Y")}, "geometry": {
+        formatted_feature = {"type": "Feature", "properties": {"pk": c.pk, "c_type": c.c_type, "c_date": c.c_date.strftime("%m/%d/%Y")}, "geometry": {
             "type": "Point", "coordinates": [float(c.c_lon), float(c.c_lat)]}}
         fc["features"].append(formatted_feature)
     # pprint(fc)
@@ -92,6 +94,8 @@ def home_page(request):
 
     # pass items if_valid() to Crime
     crimes = Crime.objects.all().order_by('-c_date')
+    print(len(crimes))
+    print(Crime.objects.all().count())
 
     pie = make_pie(crimes=crimes)
     timeline = make_timeline(crimes=crimes)
@@ -168,6 +172,7 @@ def add_evidence(request, username):
     evidence = Evidence.objects.all()
     # map centered on: (37.804363, -122.255)
     context = {"mapbox_access_token": mapbox_access_token,
+               #"author": user,
                # "table": table,
                "form": form,
                }
@@ -180,11 +185,15 @@ def make_pie(crimes):
     crime_types = Crime.objects.values('c_type').distinct()
     # pprint(crime_types)
     crimes_breakdown = {}
+    #print(crime_types)
     total_crimes = len(crimes)
     for result in crime_types:
+        #print("looking at each crime ....")
         t = result['c_type']
+        #print(t)
         num = Crime.objects.filter(c_type=t).count()
         crimes_breakdown[t] = round(num / total_crimes, 2)*100
+    #pprint(crimes_breakdown)
 
     # this is redundant w/ 'None'
     #crimes_breakdown["No type"] = round(null_rows / total_crimes, 2)*100

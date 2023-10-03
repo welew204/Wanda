@@ -11,13 +11,18 @@
         {% endif %}
     </div>
     <div>
-        {% if crime %}
+        {% if crime and user %}
+        <h1>
+            Evidence submitted for this crime. Thank you!
+        </h1>
+        {% elif crime %}
         <p><strong>Describe the scene: </strong></p><textarea unicorn:model="description"
             type="text"></textarea> <br />
         <button class="btn btn-lg btn-primary"
             unicorn:click="add_evidence">Submit</button>
         <button class="btn btn-lg btn-primary" unicorn:click="clear_crime">Clear
             Form</button>
+
         {% endif %}
     </div>
 

@@ -28,6 +28,11 @@ class Command(BaseCommand):
         missing_type = 0
         corrected = 0
         for crime in results:
+            if len(crime["description"]) >= 100:
+                c_desc = crime["description"][:100]
+                self.stdout.write(f"Truncating crime {crime['casenumber']}")
+            else:
+                c_desc = crime["description"]
             try:
                 c_type = crime['crimetype']
             except KeyError:
@@ -56,7 +61,7 @@ class Command(BaseCommand):
 
             Crime.objects.create(
                 c_type=c_type,
-                c_description=crime['description'],
+                c_description=c_desc,
                 c_date=datetime.strptime(
                     crime['datetime'], "%Y-%m-%dT%H:%M:%S.%f"),
                 c_lon=crime['location_1']['coordinates'][0],

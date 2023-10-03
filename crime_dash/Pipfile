@@ -14,6 +14,9 @@ pygal = "*"
 django-unicorn = "*"
 gunicorn = "*"
 whitenoise = "*"
+dj-database-url = "*"
+django-environ = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

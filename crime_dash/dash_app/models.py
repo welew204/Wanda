@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 # tried importing PointField but this demands a ton of GIS libraries to be installed and work (had trouble w/ GEOS lib)
 #from django.contrib.gis.db.models import PointField
 
@@ -9,7 +10,7 @@ class Crime(models.Model):
     # add all the incoming columns here
     c_type = models.CharField(
         "Crime Type", max_length=50, blank=True, null=True)
-    c_description = models.CharField("Crime Description", max_length=50)
+    c_description = models.CharField("Crime Description", max_length=100)
     c_date = models.DateField("Date")
     c_lat = models.DecimalField("Latitude", max_digits=15, decimal_places=9)
     c_lon = models.DecimalField("Longitude", max_digits=15, decimal_places=9)
@@ -26,3 +27,5 @@ class Evidence(models.Model):
     e_date = models.DateField("Date")
     e_lat = models.DecimalField("Latitude", max_digits=15, decimal_places=9)
     e_lon = models.DecimalField("Longitude", max_digits=15, decimal_places=9)
+    # add user field, to pin it to a certain user!@
+    author = models.ForeignKey(User, on_delete=models.CASCADE)

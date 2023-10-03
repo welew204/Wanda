@@ -99,15 +99,16 @@
     });
     map.on('mouseover', 'crimes-point-evi', function (e) {
         map.getCanvas().style.cursor = 'pointer'
+        console.log("mouse OVER!!!")
+    })
+    map.on('click', 'crimes-point-evi', function (e) {
+        console.log(e) // maybe this doesn't get triggered if the new Popup doesn't happen??
         html_string = `<b>Details:</b> <p>${e.features[0].properties.c_date}</p><p>${e.features[0].properties.c_type ? e.features[0].properties.c_type : 'Type undefined'}</p>`
         new mapboxgl.Popup()
             .setLngLat(e.features[0].geometry.coordinates)
             .setHTML(html_string)
             .addTo(map);
-        console.log(e)
-    })
-    map.on('click', 'crimes-point-evi', function (e) {
-        console.log("clicked!!!")
+
     })
     map.on('mouseleave', 'crimes-point-evi', function (e) {
         map.getCanvas().style.cursor = ''

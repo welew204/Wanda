@@ -6,14 +6,8 @@ from datetime import datetime
 # NOT USED/COULDN"T GET IT TO PLAY NICE
 
 
-class AddEvidenceForm(forms.ModelForm):
-    class Meta:
-        model = Evidence
-        fields = ['e_description']
-
-
 class UnicornFormView(UnicornView):
-    crime: QuerySetType[Crime] = Crime.objects.none()
+    crime = Crime.objects.none()
     #evidence: QuerySetType[Evidence] = Evidence.objects.none()
     # form = AddEvidenceForm # couldn't get this to show AFTER I remounted component with fresh data
     description = ''

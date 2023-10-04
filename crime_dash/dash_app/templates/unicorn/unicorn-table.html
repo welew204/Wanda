@@ -12,11 +12,15 @@
         <tbody>
             {% for crime in crimes %}
 
+            {% if selected_crime.id == crime.id%}
+            <tr style="background-color: lightsalmon;">
+                {% else%}
             <tr>
-
+                {% endif %}
                 <td>{{crime.c_date}}</td>
                 <td>{{crime.c_description}}</td>
                 <td><button class="btn btn-sm btn-primary"
+                        unicorn:click="select_crime('{{crime.id}}')"
                         onclick="Unicorn.call('unicorn-form', 'populate_crime_info', '{{crime.id}}');">Add
                         Evidence</button></td>
             </tr>

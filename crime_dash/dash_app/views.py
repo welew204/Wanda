@@ -75,7 +75,7 @@ class CrimeEvidenceTable(tables.Table):
 
 def crimes_to_geoJSON(request):
     crimes = Crime.objects.all()
-    print(len(crimes))
+    #print(len(crimes))
     #pprint(crimes)
     # iterate thru qs to make a FeatureCollection
     fc = {"type": "FeatureCollection", "features": []}
@@ -94,8 +94,8 @@ def home_page(request):
 
     # pass items if_valid() to Crime
     crimes = Crime.objects.all().order_by('-c_date')
-    print(len(crimes))
-    print(Crime.objects.all().count())
+    #print(len(crimes))
+    #print(Crime.objects.all().count())
 
     pie = make_pie(crimes=crimes)
     timeline = make_timeline(crimes=crimes)

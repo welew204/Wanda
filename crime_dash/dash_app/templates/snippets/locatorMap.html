@@ -22,7 +22,7 @@
         //console.log(nearby[-1][1])
         // add radius here
 
-        map.addLayer({
+        map.addLayer({ // heatmap layer
             id: 'crimes-heat-evi',
             type: 'heatmap',
             source: 'crimes-evi',
@@ -57,7 +57,7 @@
             }
         }, 'waterway-label'
         );
-        map.addLayer({
+        map.addLayer({ // circle layer
             id: 'crimes-point-evi',
             type: 'circle',
             source: 'crimes-evi',
@@ -180,11 +180,12 @@
     };
     map.on('move', function (e) {
         marker.setLngLat(map.getCenter());
+    })
 
-    });
     map.on('dragend', () => {
         Unicorn.call('unicorn-table', 'update_center', `${map.getCenter().lat},${map.getCenter().lng}`);
         Unicorn.call('unicorn-form', 'set_lat_lon', `${map.getCenter().lat},${map.getCenter().lng}`);
+        Unicorn.call('unicorn-form', 'clear_crime');
         //this requeries for data, sorts on distance, gets the 5 closest ones
         get_crimes()
         console.log('A dragend event occurred.');

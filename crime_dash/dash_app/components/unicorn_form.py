@@ -8,8 +8,8 @@ from datetime import datetime
 
 
 class UnicornFormView(UnicornView):
-    crime = Crime.objects.none()
-    user = User.objects.none()
+    crime = None # this is an empty QuerySet
+    user = None # this is an empty QuerySet
     #evidence: QuerySetType[Evidence] = Evidence.objects.none()
     # form = AddEvidenceForm # couldn't get this to show AFTER I remounted component with fresh data
     description = ''
@@ -23,15 +23,16 @@ class UnicornFormView(UnicornView):
         self.crime = Crime.objects.get(pk=c_id)
         evidence = Evidence.objects.filter(author=user.id, c_correlated=c_id).first()
         if evidence:
-            print(user)
-            user = User.objects.get(id=user.id)
+            self.user = user
+            print(f"user associated w/ this evidence: {self.user}")
         else:
+            self.user=None
             print("no user associated with this crime")
-        
 
 
     def clear_crime(self):
-        self.crime = Crime.objects.none()
+        self.crime = None
+        self.user = None
 
     def set_lat_lon(self, lat_lon):
         
@@ -45,6 +46,8 @@ class UnicornFormView(UnicornView):
         lon = float(lat_lon[1])
         #print(lat, lon)
         user = User.objects.get(id=self.request.user.id)
+        print(self.crime)
+        print(type(self.crime))
         print("Signing this evidence by user_id: ", self.request.user)
         evidence = Evidence(e_description=self.description, c_correlated=self.crime,
                             e_date=datetime.today(), e_lat=lat, e_lon=lon, author=user)
@@ -52,3 +55,4 @@ class UnicornFormView(UnicornView):
         self.user=user
         self.description = ''
         self.populate_crime_info(self.crime.id)
+        print("finished WRITING evidence row")

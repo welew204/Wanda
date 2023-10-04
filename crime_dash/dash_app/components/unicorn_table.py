@@ -10,12 +10,20 @@ class UnicornTableView(UnicornView):
     # similar to React, setting default state is required
     lat_lon = '37.804363,-122.255'
     crimes: QuerySetType[Crime] = Crime.objects.none()
-    evidence: QuerySetType[Evidence] = Evidence.objects.none()
+    selected_crime = Crime.objects.none()
+    #evidence: QuerySetType[Evidence] = Evidence.objects.none()
     #
     # variable: Type[define_type] = value
 
+    def select_crime(self, c_id):
+        target = Crime.objects.get(pk=c_id)
+        self.selected_crime = target
+        #print("set the crime id!")
+
+
     def update_center(self, new_coords):
         self.lat_lon = new_coords
+        self.selected_crime = Crime.objects.none()
         self.nearby_crimes()
 
     def nearby_crimes(self):
